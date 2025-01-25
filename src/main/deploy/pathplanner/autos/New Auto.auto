@@ -1,0 +1,85 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.4127312870010371,
+      "y": 5.535354916863679
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Ligar_Intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Desligar_Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Avancar_1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Recuar_1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Acançar_2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Recuar_2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Avancar_3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Recuar_3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Ligar_Shutter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Desligar_Shutter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
