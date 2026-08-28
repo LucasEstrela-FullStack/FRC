@@ -1,48 +1,72 @@
-Olá Aqui setarei falando o objetivo deste codigo durante minha passagem pela robotica
+# FRC — PathPlanner e bibliotecas usadas
 
-Oque utilizamos e como aplicamos.
+Este repositório reúne anotações e exemplos sobre o uso de PathPlanner e outras bibliotecas comuns na FIRST Robotics Competition (FRC). Aqui descrevo o objetivo do código, as ferramentas que utilizamos e como aplicamos na fase autônoma e de controle do robô.
 
-A ferramenta oferece uma interface gráfica para traçar o caminho desejado e gerar código de movimento, que pode ser integrado aos sistemas de controle do robô, como o WPILib (biblioteca padrão do FRC). Isso facilita a implementação de rotinas autônomas mais sofisticadas, como percorrer o campo de forma otimizada e com precisão durante a partida.
+## Objetivo
+Durante minha passagem pela robótica, foquei em planejar trajetórias precisas para o robô usando o PathPlanner e integrá-las ao sistema de controle (WPILib). O objetivo é permitir movimentos repetíveis, suaves e otimizados para executar tarefas na fase autônoma da competição.
 
-Além disso, o PathPlanner pode ser combinado com sensores, como encoders e giroscópios, para garantir que o robô siga a trajetória planejada com o máximo de precisão possível.
+## O que usamos e como aplicamos
+A principal ideia é usar o PathPlanner para desenhar trajetórias em uma interface gráfica, gerar o código de movimento (JSON ou código) e integrar esse código ao projeto do robô (WPILib). Em tempo de execução, a trajetória pode ser ajustada com leituras de sensores (encoders, giroscópio, NavX) para garantir maior precisão.
 
+### Como o fluxo funciona (resumido)
+- Projetar a trajetória na interface do PathPlanner.
+- Exportar/gerar a trajetória para o projeto (JSON ou código).
+- Integrar com comandos/rotinas do WPILib para seguir a trajetória.
+- Usar feedback de sensores (encoders, giroscópio/NavX) para correção em tempo real.
 
-A FIRST Robotics Competition (FRC) é uma das competições de robótica mais desafiadoras e conhecidas do mundo, onde equipes de estudantes de todas as idades projetam, constroem e programam robôs para realizar tarefas em um campo de competição. Cada ano, a FRC introduz um novo desafio, com o objetivo de incentivar a resolução criativa de problemas, a colaboração e a aplicação de conhecimentos em ciência, tecnologia, engenharia e matemática (STEM).
+## Bibliotecas e conceitos importantes
+No FRC, as equipes geralmente programam em Java ou C++. As principais bibliotecas e componentes que usamos incluem:
 
-Bibliotecas no FRC
-No FRC, as equipes geralmente programam seus robôs usando Java ou C++. A principal biblioteca usada no desenvolvimento do software do robô é a WPILib (WPILib Robotics Library). Ela fornece funções e métodos para controlar os componentes de hardware do robô, como motores, sensores, atuadores e outros dispositivos eletrônicos.
+### WPILib
+A WPILib é a biblioteca padrão do FRC. Ela fornece ferramentas para:
+- Controle de motores e leitura de sensores;
+- Estruturas de comando (Command-based) e gerenciamento do ciclo do robô;
+- Controle em malha (PID/PIDF) e utilitários de movimento;
+- APIs específicas para modos autônomo e teleoperado.
 
-Aqui estão algumas das bibliotecas e conceitos importantes no FRC:
+A WPILib facilita integrar trajetórias geradas pelo PathPlanner e executar comandos que controlam o chassi do robô.
 
-WPILib:
+### PathPlanner
+O PathPlanner é uma ferramenta e biblioteca que permite desenhar e gerar trajetórias autônomas com uma interface gráfica. Vantagens:
+- Geração de trajetórias suaves com aceleração e desaceleração planejadas;
+- Otimização de tempo e movimentos para evitar ações bruscas;
+- Exportação em formatos compatíveis com WPILib e rotinas de controle do robô.
 
-Esta é a biblioteca padrão para o FRC e fornece ferramentas para controle de motores, sensores, controle de PID (Proporcional, Integral, Derivativo), entre outros. Ela ajuda a equipe a lidar com a complexidade do controle do robô e a comunicação com os diferentes dispositivos.
-A biblioteca também inclui APIs para lidar com o controle do robô durante a fase autônoma (sem intervenção humana), como o controle de movimento e a interação com o campo de jogo.
-PathPlanner:
+É especialmente útil para manobras que exigem curvas suaves e mudanças de direção em alta velocidade, mantendo precisão.
 
-Como mencionado, o PathPlanner é uma biblioteca adicional que facilita a criação de trajetórias autônomas. Ele gera trajetórias precisas e otimiza o movimento do robô, algo essencial quando o tempo e a precisão são cruciais.
-A biblioteca ajuda na execução de movimentos mais avançados, como curvas suaves e mudanças de direção em alta velocidade, sem que o robô perca a precisão.
-CTRE Phoenix:
+### CTRE Phoenix
+A CTRE Phoenix é uma biblioteca para controlar controladores de motor e sensores da Cross The Road Electronics (por exemplo, Talon SRX e Victor SPX). Ela fornece:
+- Integração de baixo nível com controladores de motor;
+- Controle em malha fechada (closed-loop) com sensores integrados;
+- Ferramentas para configuração, leitura e tuning dos controladores.
 
-A CTRE Phoenix é uma biblioteca para controlar motores e sensores da CTRE (Cross The Road Electronics). Ela permite a comunicação direta com controladores de motor como o Talon SRX e o Victor SPX, oferecendo maior controle sobre o movimento do robô.
-NavX:
+### NavX
+O NavX é um sensor de navegação inercial (IMU) que fornece orientação (yaw, pitch, roll) e aceleração. Em FRC é usado para:
+- Medir a rotação do robô e permitir correções de trajetória;
+- Suportar odometria e fusão de sensores para posicionamento;
+- Ajudar no controle e estabilidade do chassi.
 
-O NavX é um sensor de navegação inercial que ajuda a medir a orientação e a aceleração do robô. Ele é utilizado em competições FRC para garantir que o robô siga o caminho correto com precisão.
-Por que usar o PathPlanner no FRC?
-O uso do PathPlanner traz várias vantagens significativas para uma equipe no FRC, principalmente na fase autônoma da competição. Aqui estão os principais motivos:
+## Por que usar o PathPlanner no FRC?
+- Precisão: cria trajetórias considerando curvas, aceleração e desaceleração para seguimento preciso;
+- Consistência: garante movimentos repetíveis na fase autônoma;
+- Otimização de tempo: reduz o tempo necessário para executar tarefas (ex.: pegar/entregar objetos);
+- Facilidade: a interface gráfica facilita a criação de trajetórias para iniciantes;
+- Integração com sensores: permite correções em tempo real usando encoders e IMUs.
 
-Precisão nos Movimentos:
+## Boas práticas ao usar trajetórias
+- Testar primeiro em baixa velocidade e em ambiente controlado;
+- Verificar limites de aceleração e corrente dos motores para evitar danos;
+- Utilizar logs e telemetria para validar o seguimento das trajetórias;
+- Implementar rotinas de segurança para interromper a trajetória em caso de falha.
 
-O PathPlanner permite que a equipe crie trajetórias que o robô pode seguir com alta precisão, levando em conta fatores como curvas, desaceleração e aceleração. Isso é essencial em uma competição, onde a precisão pode ser a diferença entre ganhar ou perder.
-Automatização e Consistência:
+## Contribuições e próximos passos
+- Adicionar exemplos de código (Java/C++) mostrando a integração PathPlanner + WPILib;
+- Incluir arquivos de trajetória de exemplo (JSON) e um tutorial passo a passo;
+- Documentar o processo de tuning de PID/Feedforward para o chassi específico.
 
-Durante a fase autônoma, o robô deve ser capaz de realizar tarefas de forma repetível e sem intervenção humana. O PathPlanner ajuda a garantir que o robô execute movimentos consistentes em todas as rodadas, evitando erros devido a falhas na execução manual.
-Otimização de Tempo:
+---
 
-O PathPlanner também ajuda a reduzir o tempo necessário para executar tarefas, como pegar ou entregar objetos, ao otimizar a trajetória. Isso pode aumentar a pontuação de uma equipe, uma vez que tempo e eficiência são cruciais no FRC.
-Facilidade de Programação:
-
-Ao fornecer uma interface gráfica para desenhar trajetórias e gerar o código correspondente, o PathPlanner torna a programação autônoma mais acessível, mesmo para equipes que não têm muita experiência com programação avançada ou controle de movimento.
-Integração com Sensores:
-
-O PathPlanner pode ser integrado com sensores de localização, como encoders e giroscópios, para garantir que o robô siga o caminho projetado com a máxima precisão, corrigindo automaticamente desvios durante a execução
+Se quiser, posso:
+- Adicionar um exemplo de projeto em Java com WPILib e PathPlanner;
+- Incluir um passo a passo de como exportar trajetórias do PathPlanner e integrá-las ao código;
+- Traduzir ou expandir alguma seção com mais detalhes técnicos.
