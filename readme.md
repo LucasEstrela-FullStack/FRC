@@ -1,72 +1,318 @@
-# FRC — PathPlanner e bibliotecas usadas
+# 🤖 FRC — PathPlanner & Robot Autonomous
 
-Este repositório reúne anotações e exemplos sobre o uso de PathPlanner e outras bibliotecas comuns na FIRST Robotics Competition (FRC). Aqui descrevo o objetivo do código, as ferramentas que utilizamos e como aplicamos na fase autônoma e de controle do robô.
+Repositório dedicado a **anotações, estudos e exemplos práticos de programação para FIRST Robotics Competition (FRC)**, com foco em **PathPlanner, WPILib e sistemas de navegação/autonomia de robôs**.
 
-## Objetivo
-Durante minha passagem pela robótica, foquei em planejar trajetórias precisas para o robô usando o PathPlanner e integrá-las ao sistema de controle (WPILib). O objetivo é permitir movimentos repetíveis, suaves e otimizados para executar tarefas na fase autônoma da competição.
-
-## O que usamos e como aplicamos
-A principal ideia é usar o PathPlanner para desenhar trajetórias em uma interface gráfica, gerar o código de movimento (JSON ou código) e integrar esse código ao projeto do robô (WPILib). Em tempo de execução, a trajetória pode ser ajustada com leituras de sensores (encoders, giroscópio, NavX) para garantir maior precisão.
-
-### Como o fluxo funciona (resumido)
-- Projetar a trajetória na interface do PathPlanner.
-- Exportar/gerar a trajetória para o projeto (JSON ou código).
-- Integrar com comandos/rotinas do WPILib para seguir a trajetória.
-- Usar feedback de sensores (encoders, giroscópio/NavX) para correção em tempo real.
-
-## Bibliotecas e conceitos importantes
-No FRC, as equipes geralmente programam em Java ou C++. As principais bibliotecas e componentes que usamos incluem:
-
-### WPILib
-A WPILib é a biblioteca padrão do FRC. Ela fornece ferramentas para:
-- Controle de motores e leitura de sensores;
-- Estruturas de comando (Command-based) e gerenciamento do ciclo do robô;
-- Controle em malha (PID/PIDF) e utilitários de movimento;
-- APIs específicas para modos autônomo e teleoperado.
-
-A WPILib facilita integrar trajetórias geradas pelo PathPlanner e executar comandos que controlam o chassi do robô.
-
-### PathPlanner
-O PathPlanner é uma ferramenta e biblioteca que permite desenhar e gerar trajetórias autônomas com uma interface gráfica. Vantagens:
-- Geração de trajetórias suaves com aceleração e desaceleração planejadas;
-- Otimização de tempo e movimentos para evitar ações bruscas;
-- Exportação em formatos compatíveis com WPILib e rotinas de controle do robô.
-
-É especialmente útil para manobras que exigem curvas suaves e mudanças de direção em alta velocidade, mantendo precisão.
-
-### CTRE Phoenix
-A CTRE Phoenix é uma biblioteca para controlar controladores de motor e sensores da Cross The Road Electronics (por exemplo, Talon SRX e Victor SPX). Ela fornece:
-- Integração de baixo nível com controladores de motor;
-- Controle em malha fechada (closed-loop) com sensores integrados;
-- Ferramentas para configuração, leitura e tuning dos controladores.
-
-### NavX
-O NavX é um sensor de navegação inercial (IMU) que fornece orientação (yaw, pitch, roll) e aceleração. Em FRC é usado para:
-- Medir a rotação do robô e permitir correções de trajetória;
-- Suportar odometria e fusão de sensores para posicionamento;
-- Ajudar no controle e estabilidade do chassi.
-
-## Por que usar o PathPlanner no FRC?
-- Precisão: cria trajetórias considerando curvas, aceleração e desaceleração para seguimento preciso;
-- Consistência: garante movimentos repetíveis na fase autônoma;
-- Otimização de tempo: reduz o tempo necessário para executar tarefas (ex.: pegar/entregar objetos);
-- Facilidade: a interface gráfica facilita a criação de trajetórias para iniciantes;
-- Integração com sensores: permite correções em tempo real usando encoders e IMUs.
-
-## Boas práticas ao usar trajetórias
-- Testar primeiro em baixa velocidade e em ambiente controlado;
-- Verificar limites de aceleração e corrente dos motores para evitar danos;
-- Utilizar logs e telemetria para validar o seguimento das trajetórias;
-- Implementar rotinas de segurança para interromper a trajetória em caso de falha.
-
-## Contribuições e próximos passos
-- Adicionar exemplos de código (Java/C++) mostrando a integração PathPlanner + WPILib;
-- Incluir arquivos de trajetória de exemplo (JSON) e um tutorial passo a passo;
-- Documentar o processo de tuning de PID/Feedforward para o chassi específico.
+O projeto reúne conceitos utilizados no desenvolvimento de rotinas autônomas, planejamento de trajetórias, controle do chassi e integração com sensores.
 
 ---
 
-Se quiser, posso:
-- Adicionar um exemplo de projeto em Java com WPILib e PathPlanner;
-- Incluir um passo a passo de como exportar trajetórias do PathPlanner e integrá-las ao código;
-- Traduzir ou expandir alguma seção com mais detalhes técnicos.
+## 🎯 Objetivo
+
+Durante minha experiência com robótica, trabalhei com o desenvolvimento de rotinas voltadas à **autonomia e movimentação precisa do robô**, utilizando o **PathPlanner integrado ao ecossistema WPILib**.
+
+A proposta é estudar e documentar como criar movimentos:
+
+* Precisos
+* Repetíveis
+* Suaves
+* Otimizados
+* Orientados por dados de sensores
+
+Esses recursos são especialmente importantes durante o **período autônomo das competições FRC**, no qual o robô precisa executar ações sem intervenção direta do operador.
+
+---
+
+## ⚙️ Como funciona
+
+O fluxo básico utilizado para criação e execução de trajetórias é:
+
+```text
+┌──────────────────────┐
+│     PathPlanner      │
+│  Criação da trajetória│
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│       WPILib         │
+│ Integração e controle│
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│  Sensores / Feedback │
+│ Encoders • NavX • IMU│
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│       Robô FRC       │
+│ Movimento e autonomia│
+└──────────────────────┘
+```
+
+### Fluxo de desenvolvimento
+
+1. Criar a trajetória utilizando o **PathPlanner**.
+2. Definir pontos, curvas, velocidades e restrições de movimento.
+3. Integrar a trajetória ao projeto desenvolvido com **WPILib**.
+4. Executar a rotina através do sistema de comandos do robô.
+5. Utilizar sensores para obter feedback da posição e orientação.
+6. Ajustar parâmetros para melhorar precisão e estabilidade.
+7. Validar o comportamento em testes controlados.
+
+---
+
+# 🧩 Tecnologias e Bibliotecas
+
+## WPILib
+
+**WPILib** é o principal framework utilizado no desenvolvimento de software para FRC.
+
+Neste contexto, ele é utilizado para:
+
+* Controle de motores e atuadores;
+* Leitura e integração de sensores;
+* Arquitetura baseada em comandos;
+* Controle autônomo e teleoperado;
+* PID e outros mecanismos de controle;
+* Odometria e posicionamento;
+* Integração com bibliotecas externas.
+
+A integração com PathPlanner permite utilizar trajetórias planejadas dentro das rotinas de controle do robô.
+
+---
+
+## 🗺️ PathPlanner
+
+O **PathPlanner** é utilizado para criação e execução de trajetórias para robôs FRC.
+
+Com ele é possível definir visualmente:
+
+* Waypoints;
+* Curvas;
+* Velocidade;
+* Aceleração;
+* Restrições de movimento;
+* Rotas autônomas;
+* Sequências de trajetórias.
+
+### Principais benefícios
+
+* Planejamento visual;
+* Movimentos mais suaves;
+* Maior repetibilidade;
+* Controle de aceleração e velocidade;
+* Facilitação do desenvolvimento autônomo;
+* Integração com sistemas de controle e sensores.
+
+O objetivo é transformar uma estratégia de movimentação em uma trajetória que o robô consiga executar de maneira previsível.
+
+---
+
+## ⚡ CTRE Phoenix
+
+A **CTRE Phoenix** fornece ferramentas para integração com controladores e componentes da **Cross The Road Electronics (CTRE)** utilizados em robôs FRC.
+
+Entre suas aplicações estão:
+
+* Controle de motores;
+* Configuração de controladores;
+* Feedback de sensores;
+* Controle em malha fechada;
+* Monitoramento de parâmetros;
+* Ajustes de desempenho.
+
+A biblioteca complementa o sistema de controle do robô ao fornecer uma interface para os dispositivos de hardware compatíveis.
+
+---
+
+## 🧭 NavX
+
+O **NavX** é utilizado como sistema de medição inercial para obter informações relacionadas à orientação e movimento do robô.
+
+Pode fornecer dados como:
+
+* Yaw;
+* Pitch;
+* Roll;
+* Aceleração;
+* Orientação angular.
+
+Essas informações podem ser utilizadas para melhorar o controle de direção, correção de trajetória e estimativa de posição.
+
+---
+
+# 🧠 Controle e Feedback
+
+Uma trajetória planejada não depende apenas do caminho definido previamente.
+
+Durante a execução, o robô pode utilizar **feedback dos sensores** para comparar o movimento esperado com o movimento real.
+
+```text
+Trajetória desejada
+        │
+        ▼
+   Controlador
+        │
+        ▼
+      Robô
+        │
+        ▼
+     Sensores
+        │
+        ▼
+     Feedback
+        │
+        └──────────► Correção
+```
+
+Essa abordagem permite reduzir erros causados por fatores como:
+
+* Atrito;
+* Variações de superfície;
+* Inércia;
+* Deslizamento das rodas;
+* Diferenças entre motores;
+* Erros de posicionamento.
+
+---
+
+# 🚀 Autonomia no FRC
+
+Durante o período autônomo, o robô precisa executar uma sequência de ações sem controle manual direto.
+
+Um fluxo simplificado pode ser:
+
+```text
+Início da partida
+       │
+       ▼
+Inicialização
+       │
+       ▼
+Leitura dos sensores
+       │
+       ▼
+Execução da trajetória
+       │
+       ▼
+Correção de movimento
+       │
+       ▼
+Execução das ações
+       │
+       ▼
+Finalização do período autônomo
+```
+
+O planejamento adequado das trajetórias é importante para aumentar a **consistência e previsibilidade** das ações realizadas pelo robô.
+
+---
+
+# 🛠️ Boas Práticas
+
+Durante o desenvolvimento e testes das rotinas, algumas práticas são importantes:
+
+### 🔹 Testes progressivos
+
+Começar com velocidades reduzidas antes de executar trajetórias em condições próximas às da competição.
+
+### 🔹 Limites de segurança
+
+Definir limites adequados de:
+
+* Velocidade;
+* Aceleração;
+* Corrente;
+* Temperatura;
+* Movimento.
+
+### 🔹 Telemetria
+
+Utilizar dados de telemetria para identificar problemas de:
+
+* Posicionamento;
+* Velocidade;
+* Orientação;
+* Erros de trajetória;
+* Resposta dos motores.
+
+### 🔹 Tuning
+
+Ajustar os parâmetros de controle de acordo com o comportamento real do robô.
+
+### 🔹 Repetibilidade
+
+Uma trajetória eficiente não deve funcionar apenas uma vez. O objetivo é obter um comportamento consistente durante diferentes execuções.
+
+---
+
+# 📚 Conteúdo do Repositório
+
+Este repositório pode ser utilizado como material de estudo e referência para:
+
+```text
+FRC
+├── PathPlanner
+│   ├── Trajetórias
+│   ├── Waypoints
+│   └── Autonomous
+│
+├── WPILib
+│   ├── Commands
+│   ├── Control
+│   └── Robot Systems
+│
+├── Sensors
+│   ├── Encoders
+│   └── NavX
+│
+└── Motor Control
+    └── CTRE Phoenix
+```
+
+---
+
+# 🔬 Próximos Passos
+
+Alguns pontos que podem ser adicionados ao projeto:
+
+* [ ] Exemplos completos em Java;
+* [ ] Exemplos de integração PathPlanner + WPILib;
+* [ ] Trajetórias de exemplo;
+* [ ] Exemplos de Autonomous Commands;
+* [ ] Documentação de tuning;
+* [ ] Exemplos utilizando sensores;
+* [ ] Odometria e estimativa de posição;
+* [ ] Telemetria e análise de desempenho.
+
+---
+
+# 🏁 Contexto
+
+Este repositório faz parte da minha trajetória de aprendizado em **programação, engenharia de software e robótica**, reunindo conhecimentos aplicados durante minha experiência com **FIRST Robotics Competition**.
+
+Além de programação, a robótica proporcionou experiência prática com **controle, eletrônica, integração de hardware, resolução de problemas e trabalho em equipe**.
+
+> **Build. Test. Fail. Improve. Repeat.**
+
+---
+
+## 📖 Referências
+
+* [WPILib](https://docs.wpilib.org/)
+* [PathPlanner](https://pathplanner.dev/)
+* [CTRE Phoenix](https://pro.docs.ctr-electronics.com/)
+* [NavX](https://pdocs.kauailabs.com/navx-mxp/)
+* [FIRST Robotics Competition](https://www.firstinspires.org/robotics/frc)
+
+---
+
+<div align="center">
+
+### 🤖 Engineering meets Robotics
+
+**FRC • Autonomous Systems • Path Planning • Control**
+
+</div>
